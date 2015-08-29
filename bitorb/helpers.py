@@ -3,8 +3,16 @@ import random
 from hashlib import sha256
 
 from flask import jsonify, make_response
+from itsdangerous import Signer
+from sqlalchemy import sql
 
 from bitorb.main import app
+from bitorb.database import User, engine
+
+from pprint import pprint
+import inspect
+
+signer = Signer(app.secret_key)
 
 
 class InvalidAPIUsage(Exception):
@@ -68,3 +76,35 @@ def allow_localhost(f):
     def decorated_function(*args, **kwargs):
         return f(*args, **kwargs)
     return decorated_function
+
+
+def gen_login_token(user):
+    token = "-".join((user.username, str(user.establishment), gen_password(8, "0123456789")))
+    token = token.encode("utf8")
+    return signer.sign(token)
+
+
+def get_user_from_token(token):
+    if not signer.validate(token):
+        return None
+
+    split = signer.unsign(token).decode("utf8").split("-")
+    print(split)
+    username = split[0]
+    estab_id = split[1]
+
+    conn = engine.connect()
+    query = sql.select([User]).where(
+        (User.establishment == estab_id) &
+        (User.username == username)
+    )
+    res = conn.execute(query)
+
+    if res.rowcount == 1:
+        return res.fetchone()
+    else:
+        return None
+
+
+def debug(obj):
+    pprint(inspect.getmembers(obj))

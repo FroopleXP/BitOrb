@@ -1,9 +1,10 @@
 from sqlalchemy import sql
 
 from flask import request, make_response, jsonify
+import itsdangerous
 import sqlalchemy
 
-from bitorb.helpers import allow_localhost, InvalidAPIUsage, crypt_hash, gen_password
+from bitorb.helpers import allow_localhost, InvalidAPIUsage, crypt_hash, gen_password, gen_login_token, signer, get_user_from_token
 from bitorb.main import app
 from bitorb.database import Establishment, User, engine
 
@@ -77,6 +78,7 @@ def api_estab_create():
 
 
 @app.route("/api/v1/user/create", methods=["POST"])
+@allow_localhost
 def api_user_create():
     return "Not implemented"
 
@@ -94,8 +96,54 @@ def api_user_login():
 
     except KeyError as e:
         print(e.args)
-        raise InvalidAPIUsage("somethign was missing", 400)
+        raise InvalidAPIUsage("something was missing", 400)
 
     estab_id = int(estab_id)
     username = username.lower()
     pass_hash = crypt_hash(password)
+
+    conn = engine.connect()
+    query = sql.select([User]).where(
+        (User.establishment == estab_id) &
+        (User.username == username) &
+        (User.pass_hash == pass_hash)
+    )
+    res = conn.execute(query)
+
+    if res.rowcount == 1:
+        # successful login, make a token
+        return make_response(jsonify({
+            "status": "success",
+            "message": "You have successfully logged in.",
+            "auth_token": gen_login_token(res.fetchall()[0])
+        }), 200)
+
+    else:
+        return make_response(jsonify({
+            "status": "failed",
+            "message": "Username, password and establishment combination was incorrect."
+        }), 200)
+
+
+@app.route("/api/v1/user/test_login", methods=["POST"])
+@allow_localhost
+def api_user_login_test():
+    try:
+        token = request.form["auth_token"]
+    except KeyError as e:
+        raise InvalidAPIUsage("auth_token field missing", 400)
+
+    user = get_user_from_token(token)
+    res = user is not None
+    print(user)
+
+    if res:
+        return make_response(jsonify({
+            "status": "success",
+            "message": "auth_token is valid. Logged in as %s." % " ".join((user.first_name, user.last_name))
+        }), 200)
+    else:
+        return make_response(jsonify({
+            "status": "failed",
+            "message": "auth_token is invalid"
+        }), 200)

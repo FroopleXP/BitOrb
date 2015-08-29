@@ -7,8 +7,6 @@ from bitorb.database import Establishment, engine
 
 from bitorb import app
 
-signer = Signer(app.secret_key)
-
 
 @app.route('/')
 def index():
@@ -32,3 +30,8 @@ def login():
 @app.route("/new_estab")
 def estab_create():
     return render_template("new_estab.html")
+
+
+@app.route("/test_token")
+def test_token():
+    return render_template("test_login.html")
