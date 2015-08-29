@@ -8,3 +8,4 @@ import bitorb.api as api
 import bitorb.main as main
 import bitorb.database as database
 import bitorb.helpers as helpers
+import bitorb.template_helpers as template_helpers
