@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block body %}
+<form id="da_form">
+    {% if establishments %}
+        <label for="da_estab">Establishment</label>
+        <select id="da_estab">
+        {% for estab in establishments %}
+            <option value="{{ estab.id }}">{{ estab.full_name }}</option>
+        {% endfor %}
+        </select>
+    {% else %}
+        <label for="da_estab">Establishment ID</label>
+        <input type="text" id="da_estab" />
+    {% endif %}
+    <br/>
+
+    <label for="da_username">Username</label>
+    <input type="text" id="da_username" />
+    <br/>
+
+    <label for="da_password">Username</label>
+    <input type="password" id="da_password" />
+    <br />
+
+    <input type="submit">
+</form>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block head %}
+<script type="text/javascript" src="/static/js/jquery-2.1.4.min.js"></script>
+{% endblock %}
+{% block body %}
+<form id="da_form" action="/api/v1/estab/create" method="post">
+    <label for="da_name">Name</label>
+    <input name="name" id="da_name" type="text"><br />
+    <label for="da_user">Admin username</label>
+    <input name="user" id="da_user" type="text"><br />
+    <label for="da_password">Admin password</label>
+    <input name="password" id="da_password" type="password"><br />
+
+    <input type="submit" value="submit">
+</form>
+
+<script type="text/javascript">
+    $("#da_form").submit(function (){
+        $.ajax({
+            url: "/api/v1/estab/create",
+            method: "POST",
+            data: {
+                name: $("#da_name").val(),
+                user: $("#da_user").val(),
+                password: $("#da_password").val()
+            },
+            success: function (data, textStatus, jqXHR) {
+                console.log(data)
+            },
+            error: function (jqXHR, textStatus, errorThrown){
+                console.log(jqXHR.responseJSON.message);
+            }
+            }
+        );
+        return false;
+    })
+</script>
+{% endblock %}

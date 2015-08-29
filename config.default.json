@@ -1,0 +1,12 @@
+{
+  "mysql": {
+    "host": "Data",
+    "username": "username",
+    "password": "password",
+    "db": "Bitorb"
+  },
+
+  "site": {
+    "name": "Bitorb"
+  }
+}
