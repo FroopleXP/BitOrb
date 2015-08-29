@@ -41,7 +41,9 @@
                 password: $("#da_password").val()
             },
             success: function (data, textStatus, jqXHR) {
-                console.log(data)
+                console.log(data);
+                Cookies.set("auth_token", data.auth_token);
+                alert("Logged in!")
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.responseJSON.message);

@@ -35,3 +35,8 @@ def estab_create():
 @app.route("/test_token")
 def test_token():
     return render_template("test_login.html")
+
+
+@app.route("/new_user")
+def new_user():
+    return render_template("new_user.html")
