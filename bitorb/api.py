@@ -80,7 +80,58 @@ def api_estab_create():
 @app.route("/api/v1/user/create", methods=["POST"])
 @allow_localhost
 def api_user_create():
-    return "Not implemented"
+    try:
+        auth_token = request.form["auth_token"]
+
+        user_first_name = request.form["user_first_name"]
+        user_last_name = request.form["user_last_name"]
+        user_other_names = request.form["user_other_names"] or None
+
+        user_email = request.form["user_email"] or None
+        user_username = request.form["user_first_name"]
+        user_password = request.form["user_password"] or gen_password(8)
+
+        user_rank = request.form["rank"]
+
+        if "" in (user_first_name, user_last_name, user_username, user_password, user_rank):
+            raise KeyError
+
+    except KeyError:
+        raise InvalidAPIUsage("Not all fields specified.", 400)
+
+    caller = get_user_from_token(auth_token)
+
+    if caller.rank != "admin":
+        return make_response(jsonify({
+            "status": "failed",
+            "message": "You do not have a high enough rank to create users."
+        }))
+
+    conn = engine.connect()
+    query = sql.insert(User, {
+        User.first_name: user_first_name,
+        User.last_name: user_last_name,
+        User.other_names: user_last_name,
+
+        User.email: user_email,
+        User.username: user_username,
+        User.pass_hash: crypt_hash(user_password),
+
+        User.rank: user_rank
+    })
+    res = conn.execute(query)
+
+    if res.inserted_primary_key:
+        return make_response(jsonify({
+            "status": "success",
+            "message": "User created",
+            "user_id": res.inserted_primary_key
+        }))
+    else:
+        return make_response(jsonify({
+            "status": "failed",
+            "message": "Unknown error"
+        }))
 
 
 @app.route("/api/v1/user/login", methods=["POST"])
