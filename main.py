@@ -12,6 +12,8 @@ from pprint import pprint
 
 import random
 
+from config import config
+
 from hashlib import sha256
 
 app = Flask(__name__)
@@ -219,5 +221,5 @@ def api_user_create():
 #     return "Hi"
 
 if __name__ == '__main__':
-    app.run("0.0.0.0")
+    app.run(config["server"]["address"], config["server"]["port"])
 
