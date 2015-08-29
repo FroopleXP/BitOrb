@@ -7,4 +7,3 @@ else:
     config = json.load(open("./config.default.json"))
     json.dump(config, open("./config.json", "w"))
     print("Config file not found, creating...")
-

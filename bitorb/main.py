@@ -1,10 +1,9 @@
 from sqlalchemy import sql
 
-from flask import Flask, render_template
+from flask import render_template
 from itsdangerous import Signer
 
 from bitorb.database import Establishment, engine
-from bitorb.config import config
 
 from bitorb import app
 
@@ -33,9 +32,3 @@ def login():
 @app.route("/new_estab")
 def estab_create():
     return render_template("new_estab.html")
-
-
-
-if __name__ == '__main__':
-    app.run(config["server"]["address"], config["server"]["port"])
-
