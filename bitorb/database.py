@@ -1,11 +1,12 @@
 __author__ = 'Emati Mitame'
 
-from sqlalchemy import create_engine, MetaData, sql
-from sqlalchemy import Table, Column, Integer, String, Boolean, DateTime, Binary, ForeignKey, func, Enum
+from sqlalchemy import create_engine
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Binary, ForeignKey, Enum
+
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from config import config
+from bitorb.config import config
 
 Base = declarative_base()
 
@@ -16,6 +17,7 @@ engine = create_engine("mysql+pymysql://%s:%s@%s/%s" % (
     config["mysql"]["db"]
     )
 )
+
 
 class Establishment(Base):
     __tablename__ = "establishments"
