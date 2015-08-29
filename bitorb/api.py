@@ -8,26 +8,6 @@ from bitorb.main import app
 from bitorb.database import Establishment, User, engine
 
 
-@app.route("/api/v1/user/login", methods=["POST"])
-@allow_localhost
-def api_user_login():
-    try:
-        estab_id = request.form["estab_id"]
-        username = request.form["username"]
-        password = request.form["password"]
-
-        if "" in (estab_id, username, password):
-            raise KeyError
-
-    except KeyError as e:
-        print(e.args)
-        raise InvalidAPIUsage("somethign was missing", 400)
-
-    estab_id = int(estab_id)
-    username = username.lower()
-    pass_hash = crypt_hash(password)
-
-
 @app.route("/api/v1/estab/create", methods=["POST"])
 @allow_localhost
 def api_estab_create():
@@ -99,3 +79,23 @@ def api_estab_create():
 @app.route("/api/v1/user/create", methods=["POST"])
 def api_user_create():
     return "Not implemented"
+
+
+@app.route("/api/v1/user/login", methods=["POST"])
+@allow_localhost
+def api_user_login():
+    try:
+        estab_id = request.form["estab_id"]
+        username = request.form["username"]
+        password = request.form["password"]
+
+        if "" in (estab_id, username, password):
+            raise KeyError
+
+    except KeyError as e:
+        print(e.args)
+        raise InvalidAPIUsage("somethign was missing", 400)
+
+    estab_id = int(estab_id)
+    username = username.lower()
+    pass_hash = crypt_hash(password)
