@@ -1,7 +1,20 @@
 {% extends "base.html" %}
-{% block arbitrary %}
-{{ require_login() }}
+{% set user = get_user() %}
+{% block head %}
+    <script type="text/javascript" src="/static/js/jquery-2.1.4.min.js"></script>
 {% endblock %}
 {% block body %}
-We made it!
+    We made it!<br />
+    Logged in as {{ user.first_name }} {{ user.last_name }}
+    <button id="da_logout">Log out</button>
+
+    <script type="text/javascript">
+        $("#da_logout").click( function(event){
+            Cookies.remove("auth_token");
+            alert("You are now logged out.");
+            window.location.replace("/login");
+            return false;
+        })
+    </script>
+
 {% endblock %}

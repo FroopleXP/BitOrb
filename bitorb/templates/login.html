@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block head %}
     <script type="text/javascript" src="/static/js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="/static/js/helpers.js"></script>
 {% endblock %}
 {% block body %}
 <form id="da_form">
@@ -39,7 +40,13 @@
             success: function (data, textStatus, jqXHR) {
                 console.log(data);
                 Cookies.set("auth_token", data.auth_token);
-                alert("Logged in!")
+                if (QueryString.r){
+                    alert("Logged in! redirecting back to previous page...");
+                    window.location.replace(QueryString.r);
+                } else {
+                    alert("Logged in!");
+                    window.location.replace("/");
+                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.responseJSON.message);
