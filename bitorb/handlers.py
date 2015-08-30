@@ -1,4 +1,4 @@
-from flask import jsonify, redirect
+from flask import jsonify, redirect, request
 from urllib.parse import quote
 
 from bitorb.errors import APIInvalidUsage, RequiresLogin
