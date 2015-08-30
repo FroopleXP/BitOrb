@@ -1,7 +1,7 @@
 from bitorb import app
 from bitorb.helpers import get_user_from_token
 from bitorb.errors import RequiresLogin
-from flask import redirect, request
+from flask import request
 
 
 def get_user():

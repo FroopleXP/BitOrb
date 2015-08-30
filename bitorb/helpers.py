@@ -1,7 +1,6 @@
 import random
 from hashlib import sha256
 
-from flask import jsonify, make_response, request
 from itsdangerous import Signer
 from sqlalchemy import sql
 

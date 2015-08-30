@@ -1,7 +1,6 @@
 from sqlalchemy import sql
 
 from flask import render_template
-from itsdangerous import Signer
 
 from bitorb.database import Establishment, engine
 
