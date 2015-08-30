@@ -9,13 +9,13 @@ something... something...
 ------------------------------------------------------------------------------------------------------------------------
 ##Setup
 ###config
-```bash
+```sh
 cp config.default.json config.json
 nano config.json
 ```
 
 ###Easy setup
-```python
+```sh
 sudo pip install flask
 sudo pip install sqlalchemy
 python runserver.py
