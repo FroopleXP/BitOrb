@@ -8,6 +8,7 @@ from bitorb.database import Establishment, engine
 from bitorb import app
 
 
+
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -20,7 +21,7 @@ def login():
             Establishment.id,
             Establishment.full_name
         )
-    )
+    ).order_by(Establishment.full_name)
     conn = engine.connect()
     res = conn.execute(query)
 

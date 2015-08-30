@@ -1,5 +1,9 @@
 from bitorb import app
+from bitorb.helpers import get_user_from_token
 from flask import redirect, request
+
+from urllib.parse import quote
+
 
 
 class RequiresLogin(Exception):
@@ -20,19 +24,24 @@ class RequiresLogin(Exception):
 
 @app.errorhandler(RequiresLogin)
 def redirect_to_login(e):
-    return redirect("/login", 302)
+    return redirect("/login?r=%s" % quote(request.url), 302)
 
 
-def require_login():
+def get_user():
+
     auth_token = request.cookies.get("auth_token")
-    if not auth_token:
+    if auth_token is None:
         raise RequiresLogin()
-    return ""
+
+    caller = get_user_from_token(auth_token)
+    if not caller:
+        raise RequiresLogin()
+    return caller
 
 
 @app.context_processor
 def utility_processor():
     return {
-        "require_login": require_login
+        "get_user": get_user
     }
 
