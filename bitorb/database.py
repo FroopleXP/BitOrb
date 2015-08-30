@@ -1,7 +1,6 @@
 __author__ = 'Emati Mitame'
 
-from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Binary, ForeignKey, Enum
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Binary, ForeignKey, Enum, create_engine, sql
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -48,7 +47,7 @@ class Token(Base):
     __tablename__ = "tokens"
     id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
 
-    created = Column(DateTime, default="NOW()")
+    created = Column(DateTime, default=sql.func.now())
     creator = Column(ForeignKey("users.id"), nullable=False)
 
     code = Column(String(10), nullable=False, unique=True)
@@ -62,7 +61,7 @@ class Transaction(Base):
     __tablename__ = "transactions"
     id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
 
-    timestamp = Column(DateTime, default="NOW()")
+    timestamp = Column(DateTime, default=sql.func.now())
 
     user_from = Column(ForeignKey("users.id"), nullable=False)
     amount = Column(Integer, nullable=False)
