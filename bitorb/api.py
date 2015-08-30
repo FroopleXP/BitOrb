@@ -5,7 +5,7 @@ import sqlalchemy
 import re
 
 from bitorb.helpers import crypt_hash, gen_password, gen_login_token, get_user_from_token
-from bitorb.errors import APIInvalidUsage
+from bitorb.errors import APIInvalidUsage, APIMissingField, APIInvalidField, AuthTokenInvalid
 from bitorb.main import app
 from bitorb.database import Establishment, User, Token, engine
 
@@ -18,7 +18,7 @@ def api_estab_create():
         name = request.form["name"]
     except KeyError as e:
         # do something more useful here
-        raise APIInvalidUsage("Name must be specified.", 400)
+        raise APIMissingField(e.args[0])
 
     try:
         user = request.form["user"] or ""
@@ -34,7 +34,7 @@ def api_estab_create():
         default_user = True
 
     if name == "":
-        raise APIInvalidUsage("Name cannot be empty", 400)
+        raise APIMissingField("name")
 
     conn = engine.connect()
     query = sql.Insert(Establishment, {
@@ -86,7 +86,9 @@ def api_token_add():
 
         token_value = request.form["token_value"]
     except KeyError as e:
-        raise APIInvalidUsage("R")
+        raise APIMissingField(e.args[0])
+
+    token_number = 1
 
     try:
         token_code = request.form["token_code"]
@@ -101,11 +103,11 @@ def api_token_add():
 
     token_number = min(100, int(token_number))
     if token_number == 0:
-        raise APIInvalidUsage("B")
+        raise APIInvalidField("token_number")
 
     if caller.rank != "admin":
         if caller.credits < token_value * token_number:
-            raise APIInvalidUsage("M")
+            raise APIInvalidUsage("M")  # TODO: add better error
 
     tokens = []
 
@@ -141,7 +143,10 @@ def api_token_add():
     if res.inserted_primary_key:
         return make_response(jsonify({
             "status": "success",
-            "message": "%s codes have been generated with a value of %s credits." % (str(token_number),str(token_value)),
+            "message": "%s codes have been generated with a value of %s credits." % (
+                str(token_number),
+                str(token_value)
+            ),
             "tokens": list({"code": x["code"], "value": x["value"]} for x in tokens)
         }))
 
@@ -153,7 +158,7 @@ def api_token_redeem():
 
         token_code = request.form["token_code"]
     except KeyError as e:
-        raise APIInvalidUsage("Y")
+        raise APIMissingField(e.args[0])
 
     caller = get_user_from_token(auth_token)
 
@@ -163,8 +168,8 @@ def api_token_redeem():
     res = conn.execute(query)
     try:
         token = res.fetchall()[0]
-    except:
-        raise APIInvalidUsage("Z")
+    except IndexError:
+        raise APIInvalidField("token_code", 200)
 
     query1 = sql.update(Token).where(Token.id == token.id).values({
         Token.redeemed: True,
@@ -203,7 +208,7 @@ def api_user_create():
             raise KeyError
 
     except KeyError:
-        raise APIInvalidUsage("Not all fields specified.", 400)
+        raise APIMissingField(e.args[0])
 
     caller = get_user_from_token(auth_token)
 
@@ -248,14 +253,20 @@ def api_user_login():
         username = request.form["username"]
         password = request.form["password"]
 
-        if "" in (estab_id, username, password):
-            raise KeyError
+        if estab_id == "":
+            raise APIMissingField("estab_id")
+        elif username == "":
+            raise APIMissingField("username")
+        elif password == "":
+            raise APIMissingField("password")
 
     except KeyError as e:
-        print(e.args[0])
-        raise APIInvalidUsage("'%s' was missing" % e.args[0], 400)
+        raise APIMissingField(e.args[0])
+    try:
+        estab_id = int(estab_id)
+    except ValueError:
+        raise APIInvalidField("estab_id")
 
-    estab_id = int(estab_id)
     username = username.lower()
     pass_hash = crypt_hash(password)
 
@@ -287,18 +298,16 @@ def api_user_login_test():
     try:
         token = request.form["auth_token"]
     except KeyError as e:
-        raise APIInvalidUsage("auth_token field missing", 400)
+        raise APIMissingField(e.args[0])
 
-    user = get_user_from_token(token)
-    res = user is not None
-    print(user)
-
-    if res:
+    try:
+        user = get_user_from_token(token)
         return make_response(jsonify({
             "status": "success",
             "message": "auth_token is valid. Logged in as %s." % " ".join((user.first_name, user.last_name))
         }), 200)
-    else:
+
+    except AuthTokenInvalid:
         return make_response(jsonify({
             "status": "failed",
             "message": "auth_token is invalid"

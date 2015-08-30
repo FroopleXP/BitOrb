@@ -7,13 +7,13 @@ from sqlalchemy import sql
 
 from bitorb.main import app
 from bitorb.database import User, engine
+from bitorb.errors import AuthTokenInvalid
 
 
 from pprint import pprint
 import inspect
 
 signer = Signer(app.secret_key)
-
 
 
 def gen_password(length=8, chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"):
@@ -37,10 +37,10 @@ def gen_login_token(user):
 
 def get_user_from_token(token):
     if not signer.validate(token):
-        return None
+        raise AuthTokenInvalid
 
     split = signer.unsign(token).decode("utf8").split("-")
-    print(split)
+
     username = split[0]
     estab_id = split[1]
 
@@ -54,7 +54,7 @@ def get_user_from_token(token):
     if res.rowcount == 1:
         return res.fetchone()
     else:
-        return None
+        raise AuthTokenInvalid
 
 
 def debug(obj):
