@@ -207,7 +207,7 @@ def api_user_create():
         if "" in (user_first_name, user_last_name, user_username, user_password, user_rank):
             raise KeyError
 
-    except KeyError:
+    except KeyError as e:
         raise APIMissingField(e.args[0])
 
     caller = get_user_from_token(auth_token)
