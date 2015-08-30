@@ -6,23 +6,23 @@
 <form id="da_form">
     {% if establishments %}
         <label for="da_estab">Establishment</label>
-        <select id="da_estab">
+        <select name="estab_id">
         {% for estab in establishments %}
             <option value="{{ estab.id }}">{{ estab.full_name }}</option>
         {% endfor %}
         </select>
     {% else %}
         <label for="da_estab">Establishment ID</label>
-        <input type="text" id="da_estab" />
+        <input type="text" name="estab_id" />
     {% endif %}
     <br/>
 
     <label for="da_username">Username</label>
-    <input type="text" id="da_username" />
+    <input type="text" name="username" />
     <br/>
 
-    <label for="da_password">Username</label>
-    <input type="password" id="da_password" />
+    <label for="da_password">Password</label>
+    <input type="password" name="password" />
     <br />
 
     <input type="submit">
@@ -35,11 +35,7 @@
         $.ajax({
             url: "/api/v1/user/login",
             method: "POST",
-            data: {
-                estab_id: $("#da_estab").val(),
-                username: $("#da_username").val(),
-                password: $("#da_password").val()
-            },
+            data: $(this).serialize(),
             success: function (data, textStatus, jqXHR) {
                 console.log(data);
                 Cookies.set("auth_token", data.auth_token);
