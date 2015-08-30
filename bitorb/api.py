@@ -222,7 +222,7 @@ def api_user_create():
     query = sql.insert(User, {
         User.first_name: user_first_name,
         User.last_name: user_last_name,
-        User.other_names: user_last_name,
+        User.other_names: user_other_names,
 
         User.email: user_email,
         User.username: user_username,
