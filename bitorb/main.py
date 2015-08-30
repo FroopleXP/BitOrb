@@ -7,7 +7,6 @@ from bitorb.database import Establishment, engine
 from bitorb import app
 
 
-
 @app.route('/')
 def index():
     return render_template("index.html")
