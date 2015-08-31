@@ -1,6 +1,6 @@
 from sqlalchemy import sql
 
-from flask import render_template, request
+from flask import render_template, request, redirect
 
 from bitorb.database import Establishment, engine
 
@@ -14,16 +14,19 @@ def index():
 
 @app.route("/login")
 def login():
-    query = sql.select(
-        (
-            Establishment.id,
-            Establishment.full_name
-        )
-    ).order_by(Establishment.full_name)
-    conn = engine.connect()
-    res = conn.execute(query)
+    if request.cookies.get("auth_token"):
+        return redirect("/user")
+    else:
+        query = sql.select(
+            (
+                Establishment.id,
+                Establishment.full_name
+            )
+        ).order_by(Establishment.full_name)
+        conn = engine.connect()
+        res = conn.execute(query)
 
-    return render_template("login.html", establishments=res.fetchall())
+        return render_template("login.html", establishments=res.fetchall())
 
 
 @app.route("/new_estab")
@@ -48,7 +51,6 @@ def create_tokens():
 
 @app.route("/user")
 def user():
-    # print(request.args)
     try:
         return render_template("user.html", user_id=request.args["id"])
     except KeyError:
