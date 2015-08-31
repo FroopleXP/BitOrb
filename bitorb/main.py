@@ -39,3 +39,8 @@ def test_token():
 @app.route("/new_user")
 def new_user():
     return render_template("new_user.html")
+
+
+@app.route("/create_tokens")
+def create_tokens():
+    return render_template("create_tokens.html")
