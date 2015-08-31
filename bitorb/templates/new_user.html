@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% set user = get_user() %}
-{% block body %}
+{% block data %}
     We made it!<br />
     Logged in as {{ user.first_name }} {{ user.last_name }}
     <button id="da_logout">Log out</button>

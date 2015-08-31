@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% set user = get_user(user_id) %}
-{% block body %}
+{% block data %}
     Name: {{ user.first_name }} {{ user.other_names }} {{ user.last_name }}<br/>
     Username: {{ user.username }}<br/>
     Email: {{ user.email }} {% if user.verified %}<i class="materialize-icons">done</i>{% endif %}<br/>
