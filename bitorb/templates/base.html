@@ -21,8 +21,9 @@
             <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Logo</a>
                 <ul class="right hide-on-med-and-down">
                     <li>
-                        <div id="nav-user" class="valign-wrapper" style="padding-right: 6px">
-                            {% if user %}
+                        {% if user %}
+                            <a href="/user">
+                            <div id="nav-user" class="valign-wrapper">
                                 <div style="
                                   border-width: 4px;
                                   background-color: #fff;
@@ -33,10 +34,15 @@
                                 </div>
 
                                 <div class="valign username" style="text-align: right; direction: rtl;">{{ user.username }}</div>
-                            {% else %}
+                            </div>
+                            </a>
+                        {% else %}
+                            <a href="/login">
+                            <div id="nav-user" class="valign-wrapper">
                                 <div class="valign">Login</div>
-                            {% endif %}
-                        </div>
+                            </div>
+                            </a>
+                        {% endif %}
                     </li>
                 </ul>
 
@@ -48,7 +54,7 @@
         </nav>
         <script type="text/javascript">
             $(document).ready(function(){
-                $("#nav-user>.username").hide();
+                $("#nav-user").children(".username").hide();
                 $("#nav-user").hover(function(event) {
                     var obj = $(this).children(".username");
                     obj.stop();
