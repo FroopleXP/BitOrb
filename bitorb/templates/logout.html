@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% set user = get_user(required=True) %}
+{% block data %}
+Logged out
+<script type="text/javascript">
+    Cookies.remove("auth_token");
+</script>
+{% endblock %}

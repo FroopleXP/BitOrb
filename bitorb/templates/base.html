@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>{% block title %}Bitorb{% endblock %}</title>
+
     <script type="text/javascript" src="/static/js/js.cookie.js"></script>
     <script type="text/javascript" src="/static/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="/static/js/helpers.js"></script>
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
-    <title>{% block title %}Bitorb{% endblock %}</title>
+
     {% block head %}
     {% endblock %}
 </head>
@@ -20,8 +24,8 @@
         <nav class="nav-mobile" role="navigation">
             <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Logo</a>
                 <ul class="right hide-on-med-and-down">
-                    <li>
-                        {% if user %}
+                    {% if user %}
+                        <li>
                             <a href="/user">
                             <div id="nav-user" class="valign-wrapper">
                                 <div style="
@@ -36,20 +40,29 @@
                                 <div class="valign username" style="text-align: right; direction: rtl;">{{ user.username }}</div>
                             </div>
                             </a>
-                        {% else %}
+                        </li>
+                        <li>
+                            <a href="/logout">
+                                <div>
+                                    Logout
+                                </div>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>
                             <a href="/login">
                             <div id="nav-user" class="valign-wrapper">
                                 <div class="valign">Login</div>
                             </div>
                             </a>
-                        {% endif %}
-                    </li>
+                        </li>
+                    {% endif %}
                 </ul>
 
                 <ul id="nav-mobile" class="side-nav">
                     <li><a href="#">Navbar Link</a></li>
                 </ul>
-                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">insert_chart</i></a>
             </div>
         </nav>
         <script type="text/javascript">

@@ -60,3 +60,12 @@ def user():
 @app.route("/user/<estab_id>/<username>")
 def other_user(estab_id, username):
     pass
+
+
+@app.route("/logout")
+def logout():
+    return render_template("logout.html")
+
+# @app.route("/usrgen/<user_id>/<item>")
+# def get_user_upload(user_id, item):
+#     pass
