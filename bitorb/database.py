@@ -37,6 +37,8 @@ class User(Base):
     username = Column(String(32), nullable=False)
     pass_hash = Column(Binary(64), nullable=False)
 
+    profile_image = Column(String(512), default="/static/images/default_profile_image.png")
+
     establishment = Column(ForeignKey("establishments.id"), nullable=False)
     rank = Column(Enum("admin", "teacher", "student"), default="student")
 
