@@ -1,6 +1,6 @@
 from sqlalchemy import sql
 
-from flask import render_template
+from flask import render_template, request
 
 from bitorb.database import Establishment, engine
 
@@ -44,3 +44,17 @@ def new_user():
 @app.route("/create_tokens")
 def create_tokens():
     return render_template("create_tokens.html")
+
+
+@app.route("/user")
+def user():
+    # print(request.args)
+    try:
+        return render_template("user.html", user_id=request.args["id"])
+    except KeyError:
+        return render_template("user.html", user_id=None)
+
+
+@app.route("/user/<estab_id>/<username>")
+def other_user(estab_id, username):
+    pass
