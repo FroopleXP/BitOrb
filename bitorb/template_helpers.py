@@ -4,22 +4,28 @@ from bitorb.errors import RequiresLogin, AuthTokenInvalid
 from flask import request
 
 
-def get_user(user_id=None):
+def get_user(user_id=None, required=True):
     if user_id is None:
         auth_token = request.cookies.get("auth_token")
         if auth_token is None:
-            raise RequiresLogin()
+            if required:
+                raise RequiresLogin()
+            else:
+                return None
 
         try:
             caller = get_user_from_token(auth_token)
         except AuthTokenInvalid:
-            raise RequiresLogin
+            if required:
+                raise RequiresLogin()
+            else:
+                return None
         return caller
     else:
         return get_user_from_id(user_id)
 
 
-def get_estab(estab_id=None):
+def get_estab(estab_id=None, required=True):
     if estab_id is None:
         estab_id = get_user().establishment
 
