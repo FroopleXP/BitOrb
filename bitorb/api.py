@@ -80,6 +80,7 @@ def api_estab_create():
 
 
 @app.route("/api/v1/token/add", methods=["POST"])
+@app.route("/api/v1/token/create", methods=["POST"])  # I can never remeber what it is... so add both.
 def api_token_add():
     try:
         auth_token = request.form["auth_token"]
@@ -88,16 +89,15 @@ def api_token_add():
     except KeyError as e:
         raise APIMissingField(e.args[0])
 
-    token_number = 1
-
     try:
         token_code = request.form["token_code"]
     except KeyError as e:
         token_code = None
-        try:
-            token_number = request.form["token_number"]
-        except KeyError as e:
-            token_number = 1
+
+    try:
+        token_number = request.form["token_number"]
+    except KeyError as e:
+        token_number = 1
 
     caller = get_user_from_token(auth_token)
 
@@ -107,17 +107,13 @@ def api_token_add():
 
     if caller.rank != "admin":
         if caller.credits < token_value * token_number:
-            raise APIInvalidUsage("M")  # TODO: add better error
+            raise APIInvalidUsage("Not enough credits")  # TODO: add better error
 
     tokens = []
 
-    if token_number == 1 and token_value:
-        if re.match("[^A-Z0-9]", token_value) or len(token_value) != 10:
-            return make_response(jsonify({
-                "status": "failed",
-                "message": "Invalid code."
-            }))
-
+    if token_number == 1 and token_code:
+        if re.match("[^A-Z0-9]", token_code) or len(token_code) != 10:
+            token_code = gen_password(10)
         tokens.append({
             "code": token_code,
             "value": token_value,
@@ -137,10 +133,14 @@ def api_token_add():
     pprint(tokens)
 
     conn = engine.connect()
-    query = sql.insert(Token, tokens)
-    res = conn.execute(query)
+    query1 = sql.insert(Token, tokens)
+    res = conn.execute(query1)
 
     if res.inserted_primary_key:
+        if caller.rank != "admin":
+            query = sql.update(User).where(User.id == caller.id).values({User.credits: caller.credits - token_number*token_code})
+            res = conn.execute(query)
+
         return make_response(jsonify({
             "status": "success",
             "message": "%s codes have been generated with a value of %s credits." % (
