@@ -60,3 +60,17 @@ class APIInvalidField(APIInvalidUsage):
             "error": "invalid-field",
             "field": field_name
         }, status_code=status_code)
+
+
+class UserNotFound(APIInvalidUsage):
+    def __init__(self, status_code=400):
+        APIInvalidUsage.__init__(self, "User could not be found", payload={
+            "error": "user-not-found"
+        }, status_code=status_code)
+
+
+class EstabNotFound(APIInvalidUsage):
+    def __init__(self, status_code=400):
+        APIInvalidUsage.__init__(self, "User could not be found", payload={
+            "error": "user-not-found"
+        }, status_code=status_code)

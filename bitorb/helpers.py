@@ -5,8 +5,8 @@ from itsdangerous import Signer
 from sqlalchemy import sql
 
 from bitorb.main import app
-from bitorb.database import User, engine
-from bitorb.errors import AuthTokenInvalid
+from bitorb.database import User, Establishment, engine
+from bitorb.errors import AuthTokenInvalid, UserNotFound, EstabNotFound
 
 
 from pprint import pprint
@@ -36,7 +36,7 @@ def gen_login_token(user):
 
 def get_user_from_token(token):
     if not signer.validate(token):
-        raise AuthTokenInvalid
+        raise AuthTokenInvalid()
 
     split = signer.unsign(token).decode("utf8").split("-")
 
@@ -53,7 +53,33 @@ def get_user_from_token(token):
     if res.rowcount == 1:
         return res.fetchone()
     else:
-        raise AuthTokenInvalid
+        raise AuthTokenInvalid()
+
+
+def get_user_from_id(user_id):
+    conn = engine.connect()
+    query = sql.select([User]).where(
+        (User.id == user_id)
+    )
+    res = conn.execute(query)
+
+    if res.rowcount == 1:
+        return res.fetchone()
+    else:
+        raise UserNotFound()
+
+
+def get_estab_from_id(estab_id):
+    conn = engine.connect()
+    query = sql.select([Establishment]).where(
+        (Establishment.id == estab_id)
+    )
+    res = conn.execute(query)
+
+    if res.rowcount == 1:
+        return res.fetchone()
+    else:
+        raise EstabNotFound()
 
 
 def debug(obj):
