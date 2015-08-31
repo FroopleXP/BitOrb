@@ -3,7 +3,7 @@
 <form id="da_form">
     {% if establishments %}
         <label for="da_estab">Establishment</label>
-        <select name="estab_id">
+        <select name="estab_id" class="browser-default">
         {% for estab in establishments %}
             <option value="{{ estab.id }}">{{ estab.full_name }}</option>
         {% endfor %}
