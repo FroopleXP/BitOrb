@@ -22,7 +22,7 @@
     {% set user = get_user(required=False) %}
     <header>
         <nav class="nav-mobile" role="navigation">
-            <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">BitOrb</a>
+            <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">{{ get_site_name() }}</a>
                 <ul class="right hide-on-med-and-down">
                     {% if user %}
                         <li>
