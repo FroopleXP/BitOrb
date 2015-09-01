@@ -1,32 +1,39 @@
 {% extends "base.html" %}
 {% block data %}
-<form id="da_form">
-    {% if establishments %}
-        <label for="da_estab">Establishment</label>
-        <select name="estab_id" class="browser-default">
-        {% for estab in establishments %}
-            <option value="{{ estab.id }}">{{ estab.full_name }}</option>
-        {% endfor %}
-        </select>
-    {% else %}
-        <label for="da_estab">Establishment ID</label>
-        <input type="text" name="estab_id" />
-    {% endif %}
-    <br/>
+<div class="panel panel-success" style="margin-top: 20px;">
 
-    <label for="da_username">Username</label>
-    <input type="text" name="username" />
-    <br/>
+    <div class="panel-heading">
+        Login
+    </div>
+    <div class="panel-body">
+        <form id="da_form">
+            {% if establishments %}
+                <label for="da_estab">Establishment</label>
+                <select name="estab_id" class="browser-default">
+                {% for estab in establishments %}
+                    <option value="{{ estab.id }}">{{ estab.full_name }}</option>
+                {% endfor %}
+                </select>
+            {% else %}
+                <label for="da_estab">Establishment ID</label>
+                <input type="text" name="estab_id" />
+            {% endif %}
+            <br/>
 
-    <label for="da_password">Password</label>
-    <input type="password" name="password" />
-    <br />
+            <label for="da_username">Username</label>
+            <input type="text" name="username" />
+            <br/>
 
-
-    <button class="btn waves-effect waves-light" type="submit" name="action">Login
-    </button>
-</form>
-
+            <label for="da_password">Password</label>
+            <input type="password" name="password" />
+            <br />
+    </form>
+    <div class="panel-footer">
+            <button class="btn waves-effect waves-light" type="submit" name="action">Login
+            </button>
+        </form>
+    </div>
+</div>
 <script type="text/javascript">
     $("#da_form").submit(function(event) {
         event.preventDefault();
