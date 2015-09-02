@@ -15,13 +15,12 @@ function login_user(data, onSuccess, onFailed, onError) {
                 case "success":
                     noti(data.message, 1);
                     Cookies.set("auth_token", data.auth_token);
-                    console.dir(data);
                     if (onSuccess){
                         onSuccess(data);
                     }
                     break;
             }
-        },  
+        },
         error: function(xhr, stat, err) {
             noti(xhr.responseJSON.message, 0);
             if (onError){
@@ -31,15 +30,21 @@ function login_user(data, onSuccess, onFailed, onError) {
     });
 }
 
+
+function resetNoti(){
+    var noti_box = $('#err_hand');
+    noti_box.hide();
+    noti_box.removeClass("alert-success").removeClass("alert-danger");
+}
+
 function noti(msg, stat) {
     var noti_box = $('#err_hand');
+    resetNoti();
     switch (stat) {
         case 1:
-            noti_box.hide();
             noti_box.addClass("alert-success").text(msg).slideDown();
             break;
         case 0:
-            noti_box.hide();
             noti_box.addClass("alert-danger").text(msg).slideDown();
             break;
     }
