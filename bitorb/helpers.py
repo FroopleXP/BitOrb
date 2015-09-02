@@ -31,7 +31,7 @@ def crypt_hash(string_to_hash):
 def gen_login_token(user):
     token = "-".join((user.username, str(user.establishment), gen_password(8, "0123456789")))
     token = token.encode("utf8")
-    return signer.sign(token)
+    return signer.sign(token).decode("utf8")
 
 
 def get_user_from_token(token):
