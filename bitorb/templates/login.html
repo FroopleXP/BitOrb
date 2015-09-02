@@ -47,6 +47,7 @@
                 </div>
             </form>
         </div>
+        <div class="alert" role="alert" id="err_hand"></div>
     </div>
     <div class="col-md-3"></div>
 
@@ -61,13 +62,7 @@
 
         login_form.on('submit', function() {
             var data = login_form.serialize();
-            login_user(data, function(){
-
-                if (QueryString.r){
-                    setTimeout(function(){window.location.replace(QueryString.r)}, 2500 )
-                }
-
-            });
+            login_user(data);
             return false;
         });
 

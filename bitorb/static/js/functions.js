@@ -35,23 +35,14 @@ function noti(msg, stat) {
     var noti_box = $('#err_hand');
     switch (stat) {
         case 1:
-            resetNoti();
-            noti_box.addClass("alert-success")
-                    .text(msg);
+            noti_box.hide();
+            noti_box.addClass("alert-success").text(msg).slideDown();
             break;
         case 0:
-            resetNoti();
-            noti_box.addClass("alert-danger")
-                    .text(msg);
+            noti_box.hide();
+            noti_box.addClass("alert-danger").text(msg).slideDown();
             break;
     }
-    $("#err_container").slideDown();
-}
-
-function resetNoti(){
-    $("#err_container").slideUp(400, function(){
-        $(this).children().removeClass("alert-success").removeClass("alert-danger")
-    });
 }
 
 var QueryString = function () {
