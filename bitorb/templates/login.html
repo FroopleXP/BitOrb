@@ -62,7 +62,11 @@
 
         login_form.on('submit', function() {
             var data = login_form.serialize();
-            login_user(data);
+            login_user(data, function(data) {
+                if (QueryString.r){
+                    window.setTimeout(function() {window.location.replace(QueryString.r);}, 2500)
+                }
+            });
             return false;
         });
 
