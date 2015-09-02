@@ -10,8 +10,9 @@
             <div class="panel-heading">
                 Login to {{ get_site_name() }}
             </div>
-            <div class="panel-body">
-                <form id="login_form">
+            <form id="login_form">
+                <div class="panel-body">
+
 
                     <!-- Using Jinja to check if there are any estabs -->
 
@@ -40,11 +41,11 @@
                         <label for="password">Password: </label>
                         <input type="password" class="form-control" name="password" placeholder="Password">
                     </div>
-            </div>
-            <div class="panel-footer">
+                </div>
+                <div class="panel-footer">
                     <button type="submit" class="btn btn-success">Login</button>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
         <div id="err_hand"></div>
     </div>
