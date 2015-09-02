@@ -1,0 +1,23 @@
+html, body {
+	height: 100%;
+	width: 100%;
+}
+
+.custom.logo {
+	position: relative;
+	top: 0px;
+	left: 10px;
+	width: 125px;
+}
+
+.custom.header {
+	border-radius: 0px;
+	background-color: rgba(225, 225, 225, 0) !important;
+	border: 0px !important;
+}
+
+.landing {
+	height: 100%;
+	width: 100%;
+	background-color: black !important;
+}
