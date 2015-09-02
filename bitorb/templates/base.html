@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <title>{% block title %}Bitorb{% endblock %}</title>
+    <title>
+        {% block title %}
+            {{ get_site_name() }} - Login
+        {% endblock %}
+    </title>
 
     <script type="text/javascript" src="/static/js/js.cookie.js"></script>
     <script type="text/javascript" src="/static/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="/static/js/helpers.js"></script>
-
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/functions.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
     {% block head %}
     {% endblock %}
@@ -21,64 +24,37 @@
 <body>
 {% block body %}
 {% block header %}
+
     {% set user = get_user(required=False) %}
-    <header>
-        <nav class="nav-mobile" role="navigation">
-            <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">{{ get_site_name() }}</a>
-                <ul class="right hide-on-med-and-down">
-                    {% if user %}
-                        <li>
-                            <a href="/user">
-                            <div id="nav-user" class="valign-wrapper">
-                                <div style="
-                                  border-width: 4px;
-                                  background-color: #fff;
-                                  height: 52px; width: 52px;
-                                  margin: 6px; padding: 4px;"
-                                  class="circle">
-                                <img src="{{ user.profile_image }}" class="circle valign responsive-img" />
-                                </div>
+    <!-- Header -->
+    <nav class="navbar navbar-default" style="border-radius: 0px;">
+        <div class="container-fluid">
 
-                                <div class="valign username" style="text-align: right; direction: rtl;">{{ user.username }}</div>
-                            </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/logout">
-                                <div>
-                                    Logout
-                                </div>
-                            </a>
-                        </li>
-                    {% else %}
-                        <li>
-                            <a href="/login">
-                            <div id="nav-user" class="valign-wrapper">
-                                <div class="valign">Login</div>
-                            </div>
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-
-                <ul id="nav-mobile" class="side-nav">
-                    <li><a href="#">Navbar Link</a></li>
-                </ul>
-                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">insert_chart</i></a>
+            <!-- For mobile -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">{{ get_site_name() }}</a>
             </div>
-        </nav>
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $("#nav-user").children(".username").hide();
-                $("#nav-user").hover(function(event) {
-                    var obj = $(this).children(".username");
-                    obj.stop();
-                    obj.animate({width:'toggle'}, 350);
 
-                })
-            })
-        </script>
-    </header>
+            <!-- Links for normal and mobile -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user %}
+                        <!-- If user is logged in -->
+                        <li><a href="/logout">Logout</a></li>
+                    {% else %}
+                        <!-- If user is not logged in -->
+                        <li><a href="#">Home</a></li>
+                    {% endif %}       
+                </ul>
+            </div>
+        </div>
+    </nav>
+
 {% endblock %}
 <div class="container">
 {% block data %}

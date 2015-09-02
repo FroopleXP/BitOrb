@@ -1,64 +1,66 @@
 {% extends "base.html" %}
 {% block data %}
-<div class="panel panel-success" style="margin-top: 20px;">
 
-    <div class="panel-heading">
-        Login
+
+<div class="row">
+
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Login to {{ get_site_name() }}
+            </div>
+            <div class="panel-body">
+                <form id="login_form">
+
+                    <!-- Using Jinja to check if there are any estabs -->
+                    <div class="form-group">
+                        <label for="estab">Group name: </label>
+                    {% if establishments%}
+                        <select class="form-control" name="estab_id">
+                            {% for estab in establishments %}
+                                <option value="{{ estab.id }}">{{ estab.full_name }}</option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <input type="text" class="form-control" id="estab" name="estab_id" placeholder="Group name">
+                    {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Username: </label>
+                        <input type="text" class="form-control" name="username" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password: </label>
+                        <input type="password" class="form-control" name="password" placeholder="Password">
+                    </div> 
+            </div>
+            <div class="panel-footer">
+                    <button type="submit" class="btn btn-success">Login</button>
+                </form>
+            </div>
+        </div>
+        <div id="err_hand"></div>
     </div>
-    <div class="panel-body">
-        <form id="da_form">
-            {% if establishments %}
-                <label for="da_estab">Establishment</label>
-                <select name="estab_id" class="browser-default">
-                {% for estab in establishments %}
-                    <option value="{{ estab.id }}">{{ estab.full_name }}</option>
-                {% endfor %}
-                </select>
-            {% else %}
-                <label for="da_estab">Establishment ID</label>
-                <input type="text" name="estab_id" />
-            {% endif %}
-            <br/>
+    <div class="col-md-3"></div>
 
-            <label for="da_username">Username</label>
-            <input type="text" name="username" />
-            <br/>
-
-            <label for="da_password">Password</label>
-            <input type="password" name="password" />
-            <br />
-    </form>
-    <div class="panel-footer">
-            <button class="btn waves-effect waves-light" type="submit" name="action">Login
-            </button>
-        </form>
-    </div>
 </div>
-<script type="text/javascript">
-    $("#da_form").submit(function(event) {
-        event.preventDefault();
 
-        $.ajax({
-            url: "/api/v1/user/login",
-            method: "POST",
-            data: $(this).serialize(),
-            success: function (data, textStatus, jqXHR) {
-                console.log(data);
-                Cookies.set("auth_token", data.auth_token);
-                if (QueryString.r){
-                    alert("Logged in! redirecting back to previous page...");
-                    window.location.replace(QueryString.r);
-                } else {
-                    alert("Logged in!");
-                    window.location.replace("/");
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR.responseJSON.message);
-            }
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        var login_form = $("#login_form");
+
+        login_form.on('submit', function() {
+            var data = login_form.serialize();
+            login_user(data);
+            return false;
         });
 
-        return false;
-    })
+    }); 
+
 </script>
 {% endblock %}
