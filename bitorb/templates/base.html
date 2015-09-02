@@ -10,14 +10,20 @@
         {% endblock %}
     </title>
 
+    <!--3rd party JS-->
     <script type="text/javascript" src="/static/js/js.cookie.js"></script>
     <script type="text/javascript" src="/static/js/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="/static/js/helpers.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/static/js/functions.js"></script>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/mod.css">
+    <!--Bootstrap-->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!--Our scripts and stylesheets-->
+    <script type="text/javascript" src="/static/js/functions.js"></script>
+    <script type="text/javascript" src="/static/js/global_animations.js"></script>
+    <link rel="stylesheet" href="/static/css/global.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/mod.css" />
+
 
     {% block head %}
     {% endblock %}
@@ -48,7 +54,14 @@
                 <ul class="nav navbar-nav navbar-right">
                     {% if user %}
                         <!-- If user is logged in -->
-                        <li><a href="/logout">Logout</a></li>
+                        <li>
+                            <a href="/user">
+                                <img class="profile-image" src="{{ user.profile_image }}" /><span>Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/logout"><span>Logout</span></a>
+                        </li>
                     {% else %}
                         <!-- If user is not logged in -->
                         <li><a href="/login">
@@ -58,6 +71,9 @@
                 </ul>
             </div>
         </div>
+    <div id="err_container">
+        <div id="err_hand" class="alert" role="alert" hidden></div>
+    </div>
     </nav>
 
 {% endblock %}
