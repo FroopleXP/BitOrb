@@ -1,3 +1,14 @@
 .navbar.navbar-default {
     border-radius: 0;
 }
+
+#err_container {
+    width: 100%;
+    text-align: center;
+    margin: 3px 0
+}
+
+#err_hand {
+    display: inline-block;
+    margin: 0 auto;
+}

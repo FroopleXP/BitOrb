@@ -24,12 +24,22 @@ function noti(msg, stat) {
     var noti_box = $('#err_hand');
     switch (stat) {
         case 1:
-            noti_box.html('<div class="alert alert-success" role="alert">'  + msg + '</div>');
+            noti_box.addClass("alert-success")
+                    .text(msg);
             break;
         case 0:
-            noti_box.html('<div class="alert alert-danger" role="alert">'  + msg + '</div>');
+            //noti_box.html('<div class="alert alert-danger" role="alert">'  + msg + '</div>');
+            noti_box.addClass("alert-danger")
+                    .text(msg);
             break;
     }
+    $("#err_container").slideDown();
+}
+
+function resetNoti(){
+    $("#err_container").slideUp(400, function(){
+        $(this).children().removeClass("alert-success").removeClass("alert-danger")
+    });
 }
 
 var QueryString = function () {
