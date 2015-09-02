@@ -14,18 +14,23 @@
                 <form id="login_form">
 
                     <!-- Using Jinja to check if there are any estabs -->
-                    <div class="form-group">
-                        <label for="estab">Group name: </label>
-                    {% if establishments%}
-                        <select class="form-control" name="estab_id">
-                            {% for estab in establishments %}
-                                <option value="{{ estab.id }}">{{ estab.full_name }}</option>
-                            {% endfor %}
-                        </select>
+
+                    {% if establishments %}
+                        <div class="form-group">
+                            <label for="estab">Group name: </label>
+                            <select class="form-control" name="estab_id">
+                                {% for estab in establishments %}
+                                    <option value="{{ estab.id }}">{{ estab.full_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     {% else %}
-                        <input type="text" class="form-control" id="estab" name="estab_id" placeholder="Group name">
+                        <div class="form-group">
+                            <label for="estab">Establishment ID</label>
+                            <input type="text" class="form-control" id="estab" name="estab_id" placeholder="Group name">
+                        </div>
                     {% endif %}
-                    </div>
+
 
                     <div class="form-group">
                         <label for="username">Username: </label>
@@ -34,7 +39,7 @@
                     <div class="form-group">
                         <label for="password">Password: </label>
                         <input type="password" class="form-control" name="password" placeholder="Password">
-                    </div> 
+                    </div>
             </div>
             <div class="panel-footer">
                     <button type="submit" class="btn btn-success">Login</button>
