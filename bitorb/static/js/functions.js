@@ -1,4 +1,4 @@
-function login_user(data) {
+function login_user(data, onSuccess, onFailed, onError) {
     $.ajax({
         url: '/api/v1/user/login',
         method: 'POST',
@@ -8,14 +8,25 @@ function login_user(data) {
             switch (data.status) {
                 case "failed":
                     noti(data.message, 0);
+                    if (onFailed){
+                        onFailed(data);
+                    }
                     break;
                 case "success":
                     noti(data.message, 1);
+                    Cookies.set("auth_token", data.auth_token);
+                    console.dir(data);
+                    if (onSuccess){
+                        onSuccess(data);
+                    }
                     break;
             }
         },  
         error: function(xhr, stat, err) {
             noti(xhr.responseJSON.message, 0);
+            if (onError){
+                onError(xhr.resposeJson)
+            }
         }
     });
 }
@@ -24,11 +35,12 @@ function noti(msg, stat) {
     var noti_box = $('#err_hand');
     switch (stat) {
         case 1:
+            resetNoti();
             noti_box.addClass("alert-success")
                     .text(msg);
             break;
         case 0:
-            //noti_box.html('<div class="alert alert-danger" role="alert">'  + msg + '</div>');
+            resetNoti();
             noti_box.addClass("alert-danger")
                     .text(msg);
             break;
