@@ -1,9 +1,25 @@
+{% set user = get_user(required=False) %}
 {% extends "base.html" %}
-{% set user = get_user(user_id) %}
 {% block data %}
-    Name: {{ user.first_name }} {{ user.other_names }} {{ user.last_name }}<br/>
-    Username: {{ user.username }}<br/>
-    Email: {{ user.email }} {% if user.verified %}<i class="materialize-icons">done</i>{% endif %}<br/>
-    Establishment: {{ get_estab(user.establishment).full_name }} ({{ user.rank }})<br/>
-    Credits: {{ user.credits }}
+	
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						Account Overview
+					</div>
+					<div class="panel-body">
+						<b>Username: </b>{{ user.username }}<br />
+						<b>Firstname: </b>{{ user.first_name }}<br />
+						<b>Lastname: </b>{{ user.last_name }}<br />
+					</div>
+				</div>
+			</div>
+			<div class="col-md-8">
+
+			</div>
+		</div>
+	</div>
+
 {% endblock %}

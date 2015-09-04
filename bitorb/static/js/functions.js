@@ -24,7 +24,7 @@ function login_user(data, onSuccess, onFailed, onError) {
         error: function(xhr, stat, err) {
             noti(xhr.responseJSON.message, 0);
             if (onError){
-                onError(xhr.resposeJson)
+                onError(xhr.resposeJson);
             }
         }
     });

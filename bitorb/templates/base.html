@@ -54,18 +54,15 @@
                     {% if user %}
                         <!-- If user is logged in -->
                         <li>
-                            <a href="/user">
-                                <img class="profile-image" src="{{ user.profile_image }}" /><span>Profile</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/logout"><span>Logout</span></a>
+                            <a href="/login">Logout</a>
                         </li>
                     {% else %}
                         <!-- If user is not logged in -->
-                        <li><a href="/login">
-                            <button type="button" class="btn btn-success">Login</button>
-                        </a></li>
+                        <li>
+                            <a href="/login">
+                                <button type="button" class="btn btn-success">Login</button>
+                            </a>
+                        </li>
                     {% endif %}       
                 </ul>
             </div>
@@ -73,11 +70,11 @@
     </nav>
 
 {% endblock %}
-<div class="container">
 {% block data %}
-No data here...
+    
+    <!-- Data added externally -->
+
 {% endblock %}
-</div>
 {% endblock %}
 </body>
 </html>
