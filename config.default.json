@@ -16,7 +16,7 @@
     "secret": "uP7DVYBKXo7OV.h!"
   },
 
-    "insecure": {
+  "insecure": {
     "enabled": true,
     "port": 5000
   },
