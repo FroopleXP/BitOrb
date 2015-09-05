@@ -21,6 +21,7 @@ engine = create_engine("mysql+pymysql://%s:%s@%s/%s" % (
 class Establishment(Base):
     __tablename__ = "establishments"
     id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
+    code_name = Column(String(3), nullable=False, unique=True)
     full_name = Column(String(256), nullable=False, unique=True)
 
 
