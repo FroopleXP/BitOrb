@@ -16,8 +16,8 @@
 
                         {% if establishments %}
                             <div class="form-group">
-                                <label for="estab">Group name: </label>
-                                <select class="form-control" name="estab_id">
+                                <label for="estab_id">Group name: </label>
+                                <select class="form-control" name="estab_id" id="estab">
                                     {% for estab in establishments %}
                                         <option value="{{ estab.id }}">{{ estab.full_name }}</option>
                                     {% endfor %}

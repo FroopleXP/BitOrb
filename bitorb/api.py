@@ -140,7 +140,9 @@ def api_token_add():
 
     if res.inserted_primary_key:
         if caller.rank != "admin":
-            query = sql.update(User).where(User.id == caller.id).values({User.credits: caller.credits - token_number*token_code})
+            query = sql.update(User).where(User.id == caller.id).values({
+                User.credits: caller.credits - token_number*token_code
+            })
             res = conn.execute(query)
 
         return make_response(jsonify({
