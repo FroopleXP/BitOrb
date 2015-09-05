@@ -15,7 +15,8 @@ from pprint import pprint
 @app.route("/api/v1/estab/create", methods=["POST"])
 def api_estab_create():
     try:
-        name = request.form["name"]
+        full_name = request.form["full_name"]
+        code_name = request.form["code_name"]
     except KeyError as e:
         # do something more useful here
         raise APIMissingField(e.args[0])
@@ -33,12 +34,13 @@ def api_estab_create():
         password = gen_password(8)
         default_user = True
 
-    if name == "":
+    if full_name == "":
         raise APIMissingField("name")
 
     conn = engine.connect()
     query = sql.Insert(Establishment, {
-        Establishment.full_name: name
+        Establishment.full_name: full_name,
+        Establishment.code_name: code_name
     })
     try:
         res = conn.execute(query)
