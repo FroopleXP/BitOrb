@@ -25,7 +25,4 @@ def user_not_found(e):
 
 @app.errorhandler(RequiresHTTPS)
 def redirect_to_secure(e):
-    if config["secure"]["allow-redirect"] or config["secure"]["enabled"]:
-        return redirect("https://" + request.url[7:])
-    else:
-        return
+    return redirect("https://" + request.url[7:])

@@ -38,8 +38,9 @@ def get_site_name():
 
 
 def get_secure(required=True):
+
     if request.url.startswith("http://"):
-        if required:
+        if (config["secure"]["allow-redirect"] or config["secure"]["enabled"]) and required:
             raise RequiresHTTPS()
         else:
             return False
