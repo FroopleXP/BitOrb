@@ -1,7 +1,8 @@
 from flask import jsonify, redirect, request, render_template, make_response
 from urllib.parse import quote
 
-from bitorb.errors import APIInvalidUsage, RequiresLogin, UserNotFound
+from bitorb.errors import APIInvalidUsage, RequiresLogin, UserNotFound, RequiresHTTPS
+from bitorb.config import config
 from bitorb import app
 
 
@@ -20,3 +21,11 @@ def redirect_to_login(e):
 @app.errorhandler(UserNotFound)
 def user_not_found(e):
     return make_response(render_template("user_not_found.html"), 400)
+
+
+@app.errorhandler(RequiresHTTPS)
+def redirect_to_secure(e):
+    if config["secure"]["allow-redirect"] or config["secure"]["enabled"]:
+        return redirect("https://" + request.url[7:])
+    else:
+        return
