@@ -1,4 +1,4 @@
-{% set user = get_user(required=False) %}
+{% set user = get_user(user_id) %}
 {% extends "base.html" %}
 {% block data %}
 	
@@ -11,8 +11,14 @@
 					</div>
 					<div class="panel-body">
 						<b>Username: </b>{{ user.username }}<br />
-						<b>Firstname: </b>{{ user.first_name }}<br />
-						<b>Lastname: </b>{{ user.last_name }}<br />
+                        <b>Full name: </b>
+                        {% if user.other_names != "" %}
+						    {{ user.first_name }} {{ user.other_names }} {{ user.last_name }}
+                        {% else %}
+                            {{ user.first_name }} {{ user.last_name }}
+                        {% endif %}
+                        <br />
+{#						<b>Lastname: </b>{{ user.last_name }}<br />#}
 					</div>
 				</div>
 			</div>
