@@ -1,8 +1,8 @@
 from sqlalchemy import sql
 
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, make_response
 
-from bitorb.database import Establishment, engine
+from bitorb.database import Establishment, User, engine
 
 from bitorb import app
 
@@ -57,9 +57,30 @@ def user():
         return render_template("user.html", user_id=None)
 
 
-@app.route("/user/<estab_id>/<username>")
-def other_user(estab_id, username):
-    pass
+@app.route("/user/<estab_code_name>/<username>")
+def other_user(estab_code_name, username):
+    estab_code_name = estab_code_name.upper()
+    username = username.lower()
+
+    conn = engine.connect()
+    query = sql.select((Establishment,)).where(
+        Establishment.code_name == estab_code_name
+    ).limit(1)
+    res = conn.execute(query)
+    if res.rowcount == 0:
+        return make_response("Invalid estab_code_name", 404)
+
+    estab_id = res.fetchone()["id"]
+
+    query = sql.select((User, )).where(
+        (User.establishment == estab_id) &
+        (User.username == username)
+    ).limit(1)
+    res = conn.execute(query)
+    if res.rowcount == 0:
+        return make_response("User not found", 404)
+    else:
+        return render_template("user.html", user_id=res.fetchone()["id"])
 
 
 @app.route("/logout")
