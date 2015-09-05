@@ -1,4 +1,5 @@
 {
+  "debug": true,
   "mysql": {
     "host": "Data",
     "username": "username",
@@ -12,7 +13,20 @@
 
   "server":{
     "address": "0.0.0.0",
-    "port": 5000,
     "secret": "uP7DVYBKXo7OV.h!"
+  },
+
+    "insecure": {
+    "enabled": true,
+    "port": 5000
+  },
+
+  "secure": {
+    "enabled": false,
+    "port": 5443,
+    "allow-redirect": true,
+    "cert": "ssl/server.crt",
+    "key": "ssl/server.key",
+    "redirect-with-port": false
   }
 }
